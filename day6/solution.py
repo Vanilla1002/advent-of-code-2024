@@ -3,7 +3,7 @@ q_map = []
 direction = 0
 result = 1
 result2 = 0
-part2_list = []
+part2_set = set()
 
 with open ('./day6/input6.txt') as f:
     for line in f:
@@ -41,10 +41,10 @@ def direction_path(map,direc, y , x):
 
 def part2(part2_list_var, part2_copy, direction, y, x):
     while True:
-        if [y, x, direction] in part2_list_var:
+        if (y, x, direction) in part2_list_var:
             return 1  
 
-        part2_list_var.append([y, x, direction])
+        part2_list_var.add((y, x, direction))
         currect_point = direction_path(part2_copy, direction, y, x)
 
         if not currect_point:  
@@ -72,14 +72,14 @@ while True:
         break
     if '.' in current_point:
         part2_copy = copy.deepcopy(q_map)
-        part2_list_copy = copy.deepcopy(part2_list)
+        part2_list_copy = copy.deepcopy(part2_set)
         part2_direction = direction
         result2 += part2(part2_list_copy,part2_copy,part2_direction+1,y,x)
         y, x = current_point['.']
     elif 'X' in current_point:
         y, x = current_point['X']
     elif '#' in current_point:
-        part2_list.append([y,x,direction%4])
+        part2_set.add((y,x,direction%4))
         direction +=1
         continue
     if q_map[y][x] == '.':
@@ -89,13 +89,8 @@ while True:
 
 print(result)
 print(result2)
-            
 
 
 
 
-with open('./day6/output6.txt', 'w') as f:
-    for i in q_map:
-        f.write(''.join(i))
-        f.write('\n')       
 
