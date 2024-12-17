@@ -39,12 +39,13 @@ def direction_path(map,direc, y , x):
         return {map[y][x - 1]: [y, x - 1]}
     return {}
 
-def part2(part2_list_var, part2_copy, direction, y, x):
+def part2(part2_set_var, part2_copy, direction, y, x):
+
     while True:
-        if (y, x, direction) in part2_list_var:
+        if (y, x, direction) in part2_set_var:
             return 1  
 
-        part2_list_var.add((y, x, direction))
+        part2_set_var.add((y, x, direction))
         currect_point = direction_path(part2_copy, direction, y, x)
 
         if not currect_point:  
@@ -71,10 +72,16 @@ while True:
     if not current_point:  
         break
     if '.' in current_point:
+        #for part2
         part2_copy = copy.deepcopy(q_map)
-        part2_list_copy = copy.deepcopy(part2_set)
+        part2_set_copy = copy.deepcopy(part2_set)
+        helper = direction_path(q_map,direction,y,x)
+        y2, x2 =  next(iter(helper.values()))
+        part2_copy[y2][x2] = '#'
+        part2_set_copy.add((y2,x2,direction%4))
         part2_direction = direction
-        result2 += part2(part2_list_copy,part2_copy,part2_direction+1,y,x)
+        result2 += part2(part2_set_copy,part2_copy,part2_direction+1,y,x)
+        ##
         y, x = current_point['.']
     elif 'X' in current_point:
         y, x = current_point['X']
